@@ -1,4 +1,5 @@
-/*
+/* tinyterm.c
+ *
  * Copyright (C) 2009 Sebastian Linke
  *
  * This is free software; you can redistribute it and/or modify it under
@@ -18,6 +19,9 @@
  
 #include <vte/vte.h>
 #include "config.h"
+
+/* Buffer size of terminal */
+#define SCROLLBACK_LINES 10000
 
 int
 main (int argc, char *argv[])
@@ -46,6 +50,9 @@ main (int argc, char *argv[])
     /* Set window title */
     gtk_window_set_title (GTK_WINDOW (window), "TinyTerm");
 
+    /* Set scrollback lines */
+    vte_terminal_set_scrollback_lines (VTE_TERMINAL (terminal), SCROLLBACK_LINES);
+
     /* Apply geometry hints to handle terminal resizing */
     geo_hints.base_width = VTE_TERMINAL (terminal)->char_width;
     geo_hints.base_height = VTE_TERMINAL (terminal)->char_height;
@@ -54,17 +61,20 @@ main (int argc, char *argv[])
     geo_hints.width_inc = VTE_TERMINAL (terminal)->char_width;
     geo_hints.height_inc = VTE_TERMINAL (terminal)->char_height;
     gtk_window_set_geometry_hints (GTK_WINDOW (window), terminal, &geo_hints,
-                                   GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE |
-                                   GDK_HINT_BASE_SIZE);
+                                   GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
 
     /* Open a shell */
-    vte_terminal_fork_command (VTE_TERMINAL (terminal), NULL, NULL, NULL, NULL,
-                               FALSE, FALSE, FALSE);
+    vte_terminal_fork_command (VTE_TERMINAL (terminal),
+                               NULL, /* binary to run (NULL=user's shell) */
+                               NULL, /* arguments */
+                               NULL, /* environment */
+                               NULL, /* dir to start (NULL=CWD) */
+                               TRUE, /* log session to lastlog */
+                               TRUE, /* log session to utmp/utmpx log */
+                               TRUE);/* log session to wtmp/wtmpx log */
 
-    /* Quit when closing the window */
+    /* Set signals when quitting */
     g_signal_connect (window, "delete-event", gtk_main_quit, NULL);
-
-    /* Quit when closing the shell (e.g. with Ctrl+D) */    
     g_signal_connect (terminal, "child-exited", gtk_main_quit, NULL);
 
     /* Put all widgets together and show the result */
