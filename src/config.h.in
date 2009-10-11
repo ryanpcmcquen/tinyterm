@@ -1,4 +1,4 @@
-/* config.h.in
+/* config.h
  *
  * Copyright (C) 2009 Sebastian Linke
  *
@@ -18,3 +18,4 @@
  */
  
  #define TINYTERM_ICON_PATH "${CMAKE_INSTALL_PREFIX}/share/pixmaps/tinyterm.png"
+ #define TINYTERM_SCROLLBACK_LINES ${SCROLLBACK_LINES}

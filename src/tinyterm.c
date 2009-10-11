@@ -16,12 +16,26 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
- 
+
+#include <gdk/gdkkeysyms.h>
 #include <vte/vte.h>
 #include "config.h"
 
-/* Buffer size of terminal */
-#define SCROLLBACK_LINES 10000
+static gboolean
+on_key_press (GtkWidget *terminal, GdkEventKey *event)
+{
+    if (event->state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) {
+        switch (event->keyval) {
+            case GDK_C:
+                vte_terminal_copy_clipboard (VTE_TERMINAL (terminal));
+                return TRUE;
+            case GDK_V:
+                vte_terminal_paste_clipboard (VTE_TERMINAL (terminal));
+                return TRUE;
+        }
+    }
+    return FALSE;
+}
 
 int
 main (int argc, char *argv[])
@@ -51,7 +65,7 @@ main (int argc, char *argv[])
     gtk_window_set_title (GTK_WINDOW (window), "TinyTerm");
 
     /* Set scrollback lines */
-    vte_terminal_set_scrollback_lines (VTE_TERMINAL (terminal), SCROLLBACK_LINES);
+    vte_terminal_set_scrollback_lines (VTE_TERMINAL (terminal), TINYTERM_SCROLLBACK_LINES);
 
     /* Apply geometry hints to handle terminal resizing */
     geo_hints.base_width = VTE_TERMINAL (terminal)->char_width;
@@ -73,9 +87,10 @@ main (int argc, char *argv[])
                                TRUE, /* log session to utmp/utmpx log */
                                TRUE);/* log session to wtmp/wtmpx log */
 
-    /* Set signals when quitting */
+    /* Set signals */
     g_signal_connect (window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect (terminal, "child-exited", gtk_main_quit, NULL);
+    g_signal_connect (terminal, "key-press-event", G_CALLBACK (on_key_press), NULL);
 
     /* Put all widgets together and show the result */
     gtk_box_pack_start (GTK_BOX (design), terminal, TRUE, TRUE, 0);
