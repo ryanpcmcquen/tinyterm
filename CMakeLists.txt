@@ -6,6 +6,8 @@ link_directories (${VTE_LIBRARY_DIRS})
 include_directories (${VTE_INCLUDE_DIRS})
 
 set (SCROLLBACK_LINES 10000)
+set (WORD_CHARS "-A-Za-z0-9./?%&#_=+@~")
+
 set (SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 configure_file ("${SOURCE_DIR}/config.h.in" "${SOURCE_DIR}/config.h")
 

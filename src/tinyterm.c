@@ -77,20 +77,23 @@ main (int argc, char *argv[])
     gtk_window_set_geometry_hints (GTK_WINDOW (window), terminal, &geo_hints,
                                    GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
 
-    /* Open a shell */
+    /* Open a standard shell */
     vte_terminal_fork_command (VTE_TERMINAL (terminal),
-                               NULL, /* binary to run (NULL=user's shell) */
-                               NULL, /* arguments */
-                               NULL, /* environment */
-                               NULL, /* dir to start (NULL=CWD) */
-                               TRUE, /* log session to lastlog */
-                               TRUE, /* log session to utmp/utmpx log */
-                               TRUE);/* log session to wtmp/wtmpx log */
+                               NULL,  // binary to run (NULL=user's shell)
+                               NULL,  // arguments
+                               NULL,  // environment
+                               NULL,  // dir to start (NULL=CWD)
+                               TRUE,  // log session to lastlog
+                               TRUE,  // log session to utmp/utmpx log
+                               TRUE); // log session to wtmp/wtmpx log
 
     /* Set signals */
     g_signal_connect (window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect (terminal, "child-exited", gtk_main_quit, NULL);
     g_signal_connect (terminal, "key-press-event", G_CALLBACK (on_key_press), NULL);
+
+    /* Handle selection behavior when double-clicking */
+    vte_terminal_set_word_chars (VTE_TERMINAL (terminal), TINYTERM_WORD_CHARS);
 
     /* Put all widgets together and show the result */
     gtk_box_pack_start (GTK_BOX (design), terminal, TRUE, TRUE, 0);
