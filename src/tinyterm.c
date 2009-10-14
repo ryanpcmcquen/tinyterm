@@ -19,7 +19,55 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <vte/vte.h>
+#include <wordexp.h>
 #include "config.h"
+
+static void
+xdg_open_selection_cb (GtkClipboard *clipboard, const char *string, gpointer data)
+{
+    char *command;
+    wordexp_t result;
+    gboolean spawn;
+    GError *spawn_error = NULL;
+
+    command = g_strconcat ("xdg-open ", string, NULL);
+    switch (wordexp (command, &result, WRDE_NOCMD)) {
+        case 0:
+            break;
+        case WRDE_BADCHAR:
+            fprintf (stderr, "'%s' contains an invalid character\n", string);
+            goto finalize;
+        case WRDE_CMDSUB:
+            fprintf (stderr, "'%s' uses command substitution, which is not allowed\n", string);
+            goto finalize;
+        case WRDE_NOSPACE:
+            fprintf (stderr, "Could not allocate enough memory when parsing '%s'\n", string);
+            goto finalize;
+        case WRDE_SYNTAX:
+            fprintf (stderr, "Syntax error in '%s'\n", string);
+            goto finalize;
+    }
+    spawn = g_spawn_async (NULL, result.we_wordv, NULL, G_SPAWN_SEARCH_PATH,
+                           NULL, NULL, NULL, &spawn_error);
+    if (!spawn) {
+        fprintf (stderr, "%s\n", spawn_error->message);
+        g_error_free (spawn_error);
+    }
+    finalize:
+        wordfree (&result);
+}
+
+static void
+xdg_open_selection (GtkWidget *terminal)
+{
+    GdkDisplay *display;
+    GtkClipboard *clipboard;
+
+    vte_terminal_copy_primary (VTE_TERMINAL (terminal));
+    display = gtk_widget_get_display (terminal);
+    clipboard = gtk_clipboard_get_for_display (display, GDK_SELECTION_PRIMARY);
+    gtk_clipboard_request_text (clipboard, xdg_open_selection_cb, NULL);
+}
 
 static gboolean
 on_key_press (GtkWidget *terminal, GdkEventKey *event)
@@ -32,6 +80,9 @@ on_key_press (GtkWidget *terminal, GdkEventKey *event)
             case GDK_V:
                 vte_terminal_paste_clipboard (VTE_TERMINAL (terminal));
                 return TRUE;
+            case GDK_X:
+                xdg_open_selection (terminal);
+                return TRUE;
         }
     }
     return FALSE;
@@ -41,7 +92,7 @@ int
 main (int argc, char *argv[])
 {
     GtkWidget *window, *terminal, *scrollbar, *design;
-    GError *icon_error;
+    GError *icon_error = NULL;
     GdkPixbuf *icon;
     GdkGeometry geo_hints;
 
@@ -53,10 +104,9 @@ main (int argc, char *argv[])
     design = gtk_hbox_new (FALSE, 0);
 
     /* Set window icon */
-    icon_error = NULL;
     icon = gdk_pixbuf_new_from_file (TINYTERM_ICON_PATH, &icon_error);
     if (!icon) {
-        g_warning ("%s\n", icon_error->message);
+        fprintf (stderr, "%s\n", icon_error->message);
         g_error_free (icon_error);
     }
     gtk_window_set_icon (GTK_WINDOW (window), icon);
@@ -87,12 +137,12 @@ main (int argc, char *argv[])
                                TRUE,  // log session to utmp/utmpx log
                                TRUE); // log session to wtmp/wtmpx log
 
-    /* Set signals */
+    /* Connect signals */
     g_signal_connect (window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect (terminal, "child-exited", gtk_main_quit, NULL);
     g_signal_connect (terminal, "key-press-event", G_CALLBACK (on_key_press), NULL);
 
-    /* Handle selection behavior when double-clicking */
+    /* Set selection behavior for double-clicks */
     vte_terminal_set_word_chars (VTE_TERMINAL (terminal), TINYTERM_WORD_CHARS);
 
     /* Put all widgets together and show the result */
