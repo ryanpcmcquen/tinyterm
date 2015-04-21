@@ -294,7 +294,7 @@ main (int argc, char* argv[])
     gtk_window_set_title(GTK_WINDOW (window), title ? title : "TinyTerm");
 
     /* set default window size */
-    gtk_window_set_default_size (GTK_WINDOW (window), 950, 550);
+    gtk_window_set_default_size(GTK_WINDOW (window), 980, 580);
 
     /* Set window icon supplied by an icon theme */
     icon_theme = gtk_icon_theme_get_default();
