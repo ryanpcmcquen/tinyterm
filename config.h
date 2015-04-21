@@ -22,17 +22,17 @@
 */
 
 /* Terminal emulation (value of $TERM) (default: xterm) */
-#define TINYTERM_TERMINFO       "screen"
+#define TINYTERM_TERMINFO               "xterm"
 
 #define TINYTERM_DYNAMIC_WINDOW_TITLE   // uncomment to enable window_title_cb
 #define TINYTERM_URGENT_ON_BELL         // uncomment to enable window_urgency_hint_cb
 #define TINYTERM_URL_BLOCK_MOUSE        // uncomment to block mouse (button-press events) in url-select mode
-#define TINYTERM_SCROLLBAR_VISIBLE    // uncomment to show scrollbar
-#define TINYTERM_SCROLLBACK_LINES   10000
-#define TINYTERM_SEARCH_WRAP_AROUND TRUE
-#define TINYTERM_AUDIBLE_BELL   FALSE
-#define TINYTERM_VISIBLE_BELL   FALSE
-#define TINYTERM_FONT           "terminus 10"
+#define TINYTERM_SCROLLBAR_VISIBLE      // uncomment to show scrollbar
+#define TINYTERM_SCROLLBACK_LINES       10000
+#define TINYTERM_SEARCH_WRAP_AROUND     TRUE
+#define TINYTERM_AUDIBLE_BELL           FALSE
+#define TINYTERM_VISIBLE_BELL           FALSE
+#define TINYTERM_FONT                   "terminus 10"
 
 /* One of VTE_ANTI_ALIAS_USE_DEFAULT, VTE_ANTI_ALIAS_FORCE_ENABLE, VTE_ANTI_ALIAS_FORCE_DISABLE */
 #define TINYTERM_ANTIALIAS      VTE_ANTI_ALIAS_FORCE_ENABLE
