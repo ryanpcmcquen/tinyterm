@@ -22,7 +22,7 @@
 */
 
 /* Terminal emulation (value of $TERM) (default: xterm) */
-/* #define TINYTERM_TERMINFO       "xterm-256color" */
+#define TINYTERM_TERMINFO       "screen"
 
 #define TINYTERM_DYNAMIC_WINDOW_TITLE   // uncomment to enable window_title_cb
 #define TINYTERM_URGENT_ON_BELL         // uncomment to enable window_urgency_hint_cb
