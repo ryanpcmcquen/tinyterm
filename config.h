@@ -1,41 +1,38 @@
 /*
- * MIT/X Consortium License
- *
- * © 2013 Jakub Klinkovský
- * © 2009 Sebastian Linke
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- *
- */
+* Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3 of the License, or
+* (at your option) any later version, with the following exception:
+* the text of the GPL license may be omitted.
+*
+* This program is distributed in the hope that it will be useful, but
+* without any warranty; without even the implied warranty of
+* merchantability or fitness for a particular purpose. Compiling,
+* interpreting, executing or merely reading the text of the program
+* may result in lapses of consciousness and/or very being, up to and
+* including the end of all existence and the Universe as we know it.
+* See the GNU General Public License for more details.
+*
+* You may have received a copy of the GNU General Public License along
+* with this program (most likely, a file named COPYING).  If not, see
+* <http://www.gnu.org/licenses/>.
+*
+*/
 
 /* Terminal emulation (value of $TERM) (default: xterm) */
-#define TINYTERM_TERMINFO       "xterm-256color"
+/* #define TINYTERM_TERMINFO       "xterm-256color" */
 
 #define TINYTERM_DYNAMIC_WINDOW_TITLE   // uncomment to enable window_title_cb
 #define TINYTERM_URGENT_ON_BELL         // uncomment to enable window_urgency_hint_cb
 #define TINYTERM_URL_BLOCK_MOUSE        // uncomment to block mouse (button-press events) in url-select mode
-//#define TINYTERM_SCROLLBAR_VISIBLE    // uncomment to show scrollbar
+#define TINYTERM_SCROLLBAR_VISIBLE    // uncomment to show scrollbar
 #define TINYTERM_SCROLLBACK_LINES   10000
 #define TINYTERM_SEARCH_WRAP_AROUND TRUE
 #define TINYTERM_AUDIBLE_BELL   FALSE
 #define TINYTERM_VISIBLE_BELL   FALSE
-#define TINYTERM_FONT           "monospace 10"
+#define TINYTERM_FONT           "terminus 10"
 
 /* One of VTE_ANTI_ALIAS_USE_DEFAULT, VTE_ANTI_ALIAS_FORCE_ENABLE, VTE_ANTI_ALIAS_FORCE_DISABLE */
 #define TINYTERM_ANTIALIAS      VTE_ANTI_ALIAS_FORCE_ENABLE
