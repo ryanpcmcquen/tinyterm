@@ -293,8 +293,8 @@ main (int argc, char* argv[])
     gtk_window_set_wmclass(GTK_WINDOW (window), name ? name : "tinyterm", "TinyTerm");
     gtk_window_set_title(GTK_WINDOW (window), title ? title : "TinyTerm");
 
-    /* set default window size */
-    gtk_window_set_default_size(GTK_WINDOW (window), 980, 580);
+    /* set default window size, defined in config.h */
+    gtk_window_set_default_size(GTK_WINDOW (window), TINYTERM_X_WINDOW_SIZE, TINYTERM_Y_WINDOW_SIZE);
 
     /* Set window icon supplied by an icon theme */
     icon_theme = gtk_icon_theme_get_default();
