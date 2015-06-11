@@ -32,7 +32,7 @@
 #define TINYTERM_SCROLLBACK_LINES       15000
 #define TINYTERM_SEARCH_WRAP_AROUND     TRUE
 #define TINYTERM_AUDIBLE_BELL           FALSE
-#define TINYTERM_VISIBLE_BELL           TRUE
+#define TINYTERM_VISIBLE_BELL           FALSE
 #define TINYTERM_FONT                   "terminus 9"
 #define TINYTERM_X_WINDOW_SIZE          990
 #define TINYTERM_Y_WINDOW_SIZE          590
