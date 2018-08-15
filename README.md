@@ -18,4 +18,4 @@ Dependencies
 
 SlackBuild available at:
 
-slackbuilds.org/apps/tinyterm/
+https://slackbuilds.org/apps/tinyterm/
