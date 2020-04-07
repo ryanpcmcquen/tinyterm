@@ -1,5 +1,5 @@
 /*
-* Ryan P. C. McQuen | Everett, WA | ryanpcmcquen@member.fsf.org
+* Ryan P. C. McQuen | Everett, WA
 */
 
 /* Terminal emulation (value of $TERM) (default: xterm) */
